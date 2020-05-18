@@ -104,6 +104,64 @@ func TestRun_GivenSomeArgsAndInput_ShouldReturnAndOutputAsExpected(t *testing.T)
 			0,
 			linesTerminated("cIvic", "Don’t nod", "kayAk"),
 		},
+
+		// --- Abecedarian cases ---
+		// No input -> No output
+		{
+			[]string{"abecedarian"},
+			lines(),
+			0,
+			"",
+		},
+		// One blank word -> No output
+		{
+			[]string{"abecedarian"},
+			lines(""),
+			0,
+			"",
+		},
+		// One non-abecedarian word -> No output
+		{
+			[]string{"abecedarian"},
+			lines("cat"),
+			0,
+			"",
+		},
+		// One abecedarian word -> Copy to output
+		{
+			[]string{"abecedarian"},
+			lines("ad"),
+			0,
+			linesTerminated("ad"),
+		},
+		// Many blanks -> No output
+		{
+			[]string{"abecedarian"},
+			lines("", ""),
+			0,
+			"",
+		},
+		// Many non-abecedarian -> No output
+		{
+			[]string{"abecedarian"},
+			lines("cat", "dog"),
+			0,
+			"",
+		},
+		// Many abecedarian words -> Copy all to putput
+		{
+			[]string{"abecedarian"},
+			lines("ad", "aLmo st"),
+			0,
+			linesTerminated("ad", "aLmo st"),
+		},
+		// Mixed case
+		{
+			[]string{"abecedarian"},
+			lines("", "ad", "dog", "AlMo st", "", "kayak", "man", ""),
+			0,
+			linesTerminated("ad", "AlMo st"),
+		},
 	}
 
 	for i, test := range tests {

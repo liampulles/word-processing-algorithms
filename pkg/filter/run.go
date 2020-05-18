@@ -10,8 +10,17 @@ import (
 	"github.com/liampulles/word-processing-algorithms/pkg"
 )
 
-var namedFilters = map[string]pkg.LineHandler{
-	"palindrome": handlerWrapper(IsPalindrome),
+var namedFilters = []pkg.LineHandlerDescriptor{
+	{
+		Name:        "palindrome",
+		Description: "Selects lines which read the same back to front",
+		LineHandler: handlerWrapper(IsPalindrome),
+	},
+	{
+		Name:        "abecedarian",
+		Description: "Selects lines whose letters read in alphabetical order",
+		LineHandler: handlerWrapper(IsAbecedarian),
+	},
 }
 
 var logger = log.New(os.Stderr, "", 0)

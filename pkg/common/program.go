@@ -15,7 +15,7 @@ var logger = log.New(os.Stderr, "", 0)
 
 // Run selects a handler using args, then processes it for each line of in, and
 // writes the output of the selected handler to out
-func Run(args []string, in io.Reader, out io.Writer, namedHandlers map[string]pkg.LineHandler) int {
+func Run(args []string, in io.Reader, out io.Writer, namedHandlers []pkg.LineHandlerDescriptor) int {
 	// What algorithm to use?
 	handler, err := selectAlgorithm(args, namedHandlers)
 	if err != nil {
@@ -45,23 +45,23 @@ func Run(args []string, in io.Reader, out io.Writer, namedHandlers map[string]pk
 	return 0
 }
 
-func selectAlgorithm(args []string, handlers map[string]pkg.LineHandler) (pkg.LineHandler, error) {
+func selectAlgorithm(args []string, handlers []pkg.LineHandlerDescriptor) (pkg.LineHandler, error) {
 	if len(args) != 1 {
 		return nil, fmt.Errorf(usage(handlers))
 	}
 	opt := args[0]
-	for k, v := range handlers {
-		if strings.ToUpper(k) == strings.ToUpper(opt) {
-			return v, nil
+	for _, handler := range handlers {
+		if strings.ToUpper(handler.Name) == strings.ToUpper(opt) {
+			return handler.LineHandler, nil
 		}
 	}
 	return nil, fmt.Errorf(usage(handlers))
 }
 
-func usage(handlers map[string]pkg.LineHandler) string {
-	usage := "You must provide one argument for the program to use. Available algorithms:\n"
-	for k := range handlers {
-		usage += fmt.Sprintln(k)
+func usage(handlers []pkg.LineHandlerDescriptor) string {
+	usage := "You must provide one argument for the program to use. Available algorithms:\n\n"
+	for _, handler := range handlers {
+		usage += fmt.Sprintf("%s\t%s\n", handler.Name, handler.Description)
 	}
 	return usage
 }
