@@ -12,14 +12,19 @@ import (
 
 var namedFilters = []pkg.LineHandlerDescriptor{
 	{
-		Name:        "palindrome",
-		Description: "Selects lines which read the same back to front",
-		LineHandler: handlerWrapper(IsPalindrome),
-	},
-	{
 		Name:        "abecedarian",
 		Description: "Selects lines whose letters read in alphabetical order",
 		LineHandler: handlerWrapper(IsAbecedarian),
+	},
+	{
+		Name:        "distinct",
+		Description: "Selects lines whose alphanumeric characters are distinct",
+		LineHandler: handlerWrapper(IsDistinct),
+	},
+	{
+		Name:        "palindrome",
+		Description: "Selects lines which read the same back to front",
+		LineHandler: handlerWrapper(IsPalindrome),
 	},
 }
 

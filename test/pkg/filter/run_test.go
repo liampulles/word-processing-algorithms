@@ -162,6 +162,64 @@ func TestRun_GivenSomeArgsAndInput_ShouldReturnAndOutputAsExpected(t *testing.T)
 			0,
 			linesTerminated("ad", "AlMo st"),
 		},
+
+		// --- Distinct cases ---
+		// No input -> No output
+		{
+			[]string{"distinct"},
+			lines(),
+			0,
+			"",
+		},
+		// One blank word -> No output
+		{
+			[]string{"distinct"},
+			lines(""),
+			0,
+			"",
+		},
+		// One non-distinct word -> No output
+		{
+			[]string{"distinct"},
+			lines("deed"),
+			0,
+			"",
+		},
+		// One distinct word -> Copy to output
+		{
+			[]string{"distinct"},
+			lines("cAt"),
+			0,
+			linesTerminated("cAt"),
+		},
+		// Many blank words -> No output
+		{
+			[]string{"distinct"},
+			lines("", ""),
+			0,
+			"",
+		},
+		// Many non-distinct words -> No output
+		{
+			[]string{"distinct"},
+			lines("deed", " mom"),
+			0,
+			"",
+		},
+		// Many distinct words -> Copy to output
+		{
+			[]string{"distinct"},
+			lines("cAt", "Dog"),
+			0,
+			linesTerminated("cAt", "Dog"),
+		},
+		// Mixed case
+		{
+			[]string{"distinct"},
+			lines("", "deed", "cAt", "mom", "", "Dog"),
+			0,
+			linesTerminated("cAt", "Dog"),
+		},
 	}
 
 	for i, test := range tests {
